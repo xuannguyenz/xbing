@@ -24,8 +24,8 @@ body{
     background:#1b1b1b;
 
     display:flex;
-    flex-direction: column;
-    gap:10px;
+    flex-direction: row;
+    gap:15px;
 
     justify-content:flex-start;
     align-items:center;
@@ -36,49 +36,18 @@ body{
     overflow:hidden;
 }
 
-/* Disclaimer */
+/* Sidebar Controls */
 
-.disclaimer{
-    width:100%;
-    max-width:100%; 
-    background:#2a2a2a;
-    border:1px solid #ff9800;
-    border-radius:10px;
-    padding:12px;
-    color:#fff;
-    font-size:12px;
-    line-height:1.5;
-}
-
-.disclaimer h3{
-    margin:0 0 8px 0;
-    color:#ff9800;
-    font-size:13px;
-}
-
-.disclaimer p{
-    margin:3px 0;
-    font-size:11px;
-}
-
-.disclaimer ul{
-    margin:5px 0;
-    padding-left:20px;
-    font-size:11px;
-}
-
-/* Controls */
-
-.controls{
+.sidebar{
     display:flex;
+    flex-direction:column;
     gap:10px;
-    flex-wrap:nowrap;
-    justify-content:center;
-    width:100%;
+    flex-shrink:0;
+    width:auto;
 }
 
 button{
-    padding:8px 15px;
+    padding:10px 15px;
     background:#ff9800;
     color:#000;
     border:none;
@@ -87,6 +56,7 @@ button{
     font-weight:bold;
     font-size:13px;
     transition:background 0.3s;
+    white-space:nowrap;
 }
 
 button:hover{
@@ -101,20 +71,19 @@ button:active{
 
 .frames-container{
     display:flex;
-    flex-wrap:nowrap;
     gap:20px;
     justify-content:center;
     align-items:center;
     flex:1;
     width:100%;
+    height:100%;
     min-height:0;
 }
 
-/* Desktop (iPad) */
+/* iPad Pro (12.9") - Aspect Ratio 4:3 */
 
 .desktop-wrapper{
 
-    width:45%;
     height:100%;
 
     background:#3a2a2a;
@@ -130,6 +99,7 @@ button:active{
     flex-direction:column;
 
     min-height:0;
+    aspect-ratio: 4/3;
 }
 
 .desktop-title{
@@ -160,11 +130,10 @@ button:active{
 }
 
 
-/* Mobile (iPhone) */
+/* iPhone Pro (Max) - Aspect Ratio 19.5:9 */
 
 .mobile-wrapper{
 
-    width:25%;
     height:100%;
 
     background:#3a2a2a;
@@ -182,6 +151,8 @@ button:active{
     flex-direction:column;
 
     min-height:0;
+    aspect-ratio: 19.5/9;
+    flex-shrink:0;
 }
 
 .mobile-title{
@@ -231,38 +202,15 @@ button:active{
     min-height:0;
 }
 
-.info{
-
-    width:100%;
-
-    color:#bbb;
-
-    text-align:center;
-
-    font-size:12px;
-
-    flex-shrink:0;
-}
-
 </style>
 
 </head>
 
 <body>
 
-<!-- Disclaimer & Warning -->
+<!-- Sidebar Controls -->
 
-<div class="disclaimer">
-    <h3>⚠️ Important - Disclaimer</h3>
-    <p><strong>This is a Multi-Device Viewer for Bing Search and Bing Rewards.</strong></p>
-    <p>By using this tool, you acknowledge that you will use it for <strong>legitimate purposes only</strong>, agree to <strong>Bing's Terms of Service</strong>, will <strong>NOT</strong> use automated scripts or bots, and take full responsibility for your actions.</p>
-</div>
-
-<!-- Controls -->
-
-<div class="controls">
-    <button onclick="loadDesktopSearch()">Load Desktop Search</button>
-    <button onclick="loadMobileRewards()">Load Mobile Rewards</button>
+<div class="sidebar">
     <button onclick="loadBoth()">Load Both</button>
     <button onclick="clearFrames()">Clear</button>
 </div>
@@ -271,22 +219,22 @@ button:active{
 
 <div class="frames-container">
 
-    <!-- Desktop (iPad) -->
+    <!-- iPad Pro -->
 
     <div class="desktop-wrapper">
 
-        <div class="desktop-title">iPad View</div>
+        <div class="desktop-title">iPad Pro</div>
 
         <iframe id="desktopFrame"></iframe>
 
     </div>
 
 
-    <!-- Mobile (iPhone) -->
+    <!-- iPhone Pro -->
 
     <div class="mobile-wrapper">
 
-        <div class="mobile-title">iPhone View</div>
+        <div class="mobile-title">iPhone Pro</div>
 
         <div class="mobile-notch"></div>
 
@@ -294,10 +242,6 @@ button:active{
 
     </div>
 
-</div>
-
-<div class="info" id="statusText">
-    Ready - Click buttons to load content
 </div>
 
 
@@ -544,7 +488,6 @@ function loadDesktopSearch(){
 
     const frame = document.getElementById("desktopFrame");
     frame.src = createDesktopUrl();
-    updateStatus("Desktop search loaded");
 }
 
 
@@ -556,7 +499,6 @@ function loadMobileRewards(){
 
     const frame = document.getElementById("mobileFrame");
     frame.src = createMobileUrl();
-    updateStatus("Mobile Bing Rewards loaded");
 }
 
 
@@ -568,7 +510,6 @@ function loadBoth(){
 
     loadDesktopSearch();
     loadMobileRewards();
-    updateStatus("Both frames loaded");
 }
 
 
@@ -580,20 +521,6 @@ function clearFrames(){
 
     document.getElementById("desktopFrame").src = "";
     document.getElementById("mobileFrame").src = "";
-    updateStatus("Frames cleared");
-}
-
-
-/* =========================
-   Update Status
-========================= */
-
-function updateStatus(message){
-
-    const now = new Date();
-
-    document.getElementById("statusText").innerText =
-        message + " - " + now.toLocaleTimeString();
 }
 
 
