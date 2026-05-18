@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>Bing Multi Device Viewer</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+
+    margin:0;
+    padding:20px;
+
+    background:#1b1b1b;
+
+    display:flex;
+    flex-wrap:wrap;
+    gap:20px;
+
+    justify-content:center;
+    align-items:flex-start;
+
+    font-family:Arial, sans-serif;
+}
+
+/* Desktop */
+
+.desktop-wrapper{
+
+    width:68%;
+    min-width:800px;
+
+    background:#3a2a2a;
+
+    border-radius:20px;
+
+    padding:10px;
+
+    box-shadow:
+        0 0 20px rgba(0,0,0,0.4);
+}
+
+.desktop-title{
+
+    color:#fff;
+
+    padding:10px;
+
+    font-size:18px;
+}
+
+#desktopFrame{
+
+    width:100%;
+    height:800px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#fff;
+}
+
+
+/* Mobile */
+
+.mobile-wrapper{
+
+    background:#3a2a2a;
+
+    border-radius:40px;
+
+    padding:12px;
+
+    position:relative;
+
+    box-shadow:
+        0 0 25px rgba(0,0,0,0.5);
+}
+
+.mobile-title{
+
+    color:#fff;
+
+    padding:10px;
+
+    font-size:18px;
+}
+
+
+.mobile-notch{
+
+    width:100px;
+    height:20px;
+
+    background:#000;
+
+    border-radius:20px;
+
+    position:absolute;
+
+    top:16px;
+    left:50%;
+
+    transform:translateX(-50%);
+
+    z-index:10;
+}
+
+#mobileFrame{
+
+    width:390px;
+    height:800px;
+
+    border:none;
+
+    border-radius:30px;
+
+    background:#fff;
+}
+
+.info{
+
+    width:100%;
+
+    color:#bbb;
+
+    text-align:center;
+
+    margin-top:10px;
+
+    font-size:14px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- Desktop -->
+
+<div class="desktop-wrapper">
+
+    <div class="desktop-title">Tablet View</div>
+
+    <iframe id="desktopFrame"></iframe>
+
+</div>
+
+
+<!-- Mobile -->
+
+<div class="mobile-wrapper">
+
+    <div class="mobile-title">Phone View</div>
+
+    <div class="mobile-notch"></div>
+
+    <iframe id="mobileFrame"></iframe>
+
+</div>
+
+
+<div class="info" id="statusText">
+
+    Initializing...
+
+</div>
+
+
+<script>
+
+/* =========================
+   Query Generator
+========================= */
+
+function randomQuery(){
+
+const queries = [
+
+"tình yêu quê hương việt nam",
+"con người việt nam thân thiện",
+"vẻ đẹp đất nước việt nam",
+"du lịch hà nội mùa thu",
+"ẩm thực việt nam truyền thống",
+"tình yêu gia đình việt nam",
+"văn hóa dân tộc việt nam",
+"phong cảnh sapa việt nam",
+"tình người trong cuộc sống",
+"lòng nhân ái của người việt",
+"biển việt nam tuyệt đẹp",
+"tình yêu tuổi trẻ",
+"đất nước việt nam đổi mới",
+"con người việt nam hiếu khách",
+"những điều đẹp đẽ trong cuộc sống",
+"vẻ đẹp của lòng tốt",
+"phụ nữ việt nam dịu dàng",
+"nét đẹp văn hóa việt",
+"tình yêu học trò",
+"quê hương thanh bình việt nam",
+"niềm tự hào dân tộc việt nam",
+"mùa lúa chín miền bắc",
+"cà phê việt nam nổi tiếng",
+"tình yêu và hy vọng",
+"sự tử tế trong xã hội",
+"lòng biết ơn cha mẹ",
+"vịnh hạ long kỳ quan thiên nhiên",
+"phố cổ hội an việt nam",
+"tình cảm gia đình thiêng liêng",
+"vẻ đẹp của sự sẻ chia",
+"thành phố hồ chí minh năng động",
+"đà nẵng thành phố đáng sống",
+"tình yêu thiên nhiên việt nam",
+"nụ cười của người việt",
+"văn hóa áo dài việt nam",
+"tình yêu đôi lứa",
+"khát vọng tuổi trẻ việt nam",
+"người việt nam chăm chỉ",
+"mùa xuân trên quê hương",
+"lòng yêu nước việt nam",
+"cuộc sống bình yên",
+"tình người nơi phố thị",
+"đồng bằng sông cửu long",
+"vẻ đẹp miền trung việt nam",
+"những cánh đồng lúa xanh",
+"niềm vui trong cuộc sống",
+"truyền thống hiếu học việt nam",
+"người lao động việt nam",
+"tình yêu thương con người",
+"quê hương và tuổi thơ",
+"biển đảo quê hương",
+"thành phố hà nội cổ kính",
+"văn hóa ẩm thực đường phố",
+"con người miền tây chân chất",
+"núi rừng tây bắc việt nam",
+"tình cảm bạn bè chân thành",
+"tinh thần đoàn kết dân tộc",
+"vẻ đẹp của lòng bao dung",
+"những chuyến đi khám phá việt nam",
+"cố đô huế thơ mộng",
+"niềm tin vào tương lai",
+"tình yêu cuộc sống giản dị",
+"lòng hiếu thảo của con cái",
+"người việt nam nghĩa tình",
+"vẻ đẹp của sự trung thực",
+"mùa hè trên biển việt nam",
+"những con đường làng quê",
+"tình yêu quê nhà",
+"đất nước việt nam hòa bình",
+"giá trị của gia đình",
+"tình người trong khó khăn",
+"sự chân thành trong tình yêu",
+"lễ hội truyền thống việt nam",
+"vẻ đẹp của lòng vị tha",
+"mùa đông hà nội",
+"tình yêu đất mẹ việt nam",
+"niềm tự hào về lịch sử dân tộc",
+"vẻ đẹp của người mẹ việt nam",
+"văn hóa tết cổ truyền",
+"những dòng sông quê hương",
+"con người việt nam kiên cường",
+"tình yêu tuổi thanh xuân",
+"khung cảnh bình minh việt nam",
+"những bản làng vùng cao",
+"vẻ đẹp của lòng dũng cảm",
+"truyền thống yêu nước",
+"tình cảm anh em gia đình",
+"phong cảnh miền núi việt nam",
+"mùa thu vàng việt nam",
+"tình yêu thương và sẻ chia",
+"con người việt nam giản dị",
+"vẻ đẹp của sự hy sinh",
+"những khu chợ truyền thống",
+"tình yêu trong văn học việt nam",
+"niềm vui đoàn tụ gia đình",
+"tinh thần vượt khó vươn lên",
+"vẻ đẹp của lòng trung thành",
+"quê hương việt nam tươi đẹp",
+"những con phố đêm hà nội",
+"ẩm thực miền trung việt nam",
+"tình yêu thiên nhiên xanh",
+"vẻ đẹp của lao động",
+"lòng tự hào dân tộc",
+"những cơn mưa mùa hạ",
+"văn hóa cà phê việt",
+"người dân miền biển việt nam",
+"tình cảm cha con",
+"không khí tết việt nam",
+"vẻ đẹp của sự bình dị",
+"tình yêu và lòng biết ơn",
+"những ngôi chùa việt nam",
+"phong cảnh đồng quê yên bình",
+"con người việt nam giàu nghị lực",
+"vẻ đẹp của lòng nhân hậu",
+"mùa xuân trên phố cổ",
+"tình yêu quê hương đất nước",
+"những giá trị truyền thống",
+"tình cảm mẹ con thiêng liêng",
+"sự gắn kết cộng đồng",
+"vẻ đẹp của sự cảm thông",
+"đêm hội an lung linh",
+"biển xanh cát trắng việt nam",
+"người việt nam mến khách",
+"những chuyến tàu quê hương",
+"tình yêu của tuổi trẻ việt nam",
+"vẻ đẹp của sự chân thật",
+"lễ hội trung thu việt nam",
+"quê hương trong ký ức",
+"tình người nơi miền quê",
+"vẻ đẹp của sự tử tế",
+"thành phố biển nha trang",
+"mùa lúa miền tây",
+"con người việt nam cần cù",
+"văn hóa dân gian việt nam",
+"tình yêu và niềm tin",
+"vẻ đẹp của lòng kiên trì",
+"những con người bình dị",
+"đất nước việt nam phát triển",
+"tình yêu cuộc sống mỗi ngày",
+"cảnh đẹp đà lạt mộng mơ",
+"tình cảm gia đình bền chặt",
+"vẻ đẹp của sự sẻ chia",
+"quê hương và nỗi nhớ",
+"tình yêu trong âm nhạc việt nam",
+"vẻ đẹp của sự đoàn kết",
+"những hàng cây mùa thu",
+"con người việt nam lạc quan",
+"vẻ đẹp của sự chân thành",
+"mùa xuân quê hương",
+"lòng yêu thương trẻ em",
+"tình cảm vợ chồng",
+"vẻ đẹp của lòng biết ơn",
+"ẩm thực miền bắc việt nam",
+"những làn điệu dân ca",
+"con người việt nam hiền hòa",
+"tình yêu và hạnh phúc",
+"vẻ đẹp của lòng khoan dung",
+"mùa vàng trên quê hương",
+"vẻ đẹp người lao động",
+"những con đường ven biển",
+"quê hương trong tim",
+"tình yêu và sự đồng cảm",
+"vẻ đẹp của lòng thủy chung",
+"những buổi chiều yên bình",
+"đất nước việt nam thân yêu",
+"con người việt nam giàu tình cảm",
+"vẻ đẹp của lòng bao dung",
+"những ngày hè tuổi thơ",
+"tình yêu với cuộc sống",
+"vẻ đẹp của lòng trắc ẩn",
+"văn hóa truyền thống việt nam",
+"những mái nhà quê hương",
+"tình cảm gia đình ấm áp",
+"vẻ đẹp của lòng trung thực",
+"những buổi sáng bình yên",
+"đồng quê việt nam xanh mát",
+"con người việt nam yêu hòa bình",
+"tình yêu và sự hy vọng",
+"vẻ đẹp của lòng nhân văn",
+"những chuyến xe quê hương",
+"tình người trong cuộc sống hiện đại",
+"vẻ đẹp của sự giản dị",
+"những giấc mơ tuổi trẻ",
+"quê hương và tình yêu",
+"vẻ đẹp của sự sẻ chia",
+"con người việt nam đoàn kết",
+"tình yêu trong trái tim",
+"vẻ đẹp của lòng vị tha",
+"những dòng ký ức quê nhà",
+"đất nước việt nam thanh bình",
+"tình yêu thương giữa con người",
+"vẻ đẹp của sự đồng lòng",
+"những ngày tháng tuổi trẻ",
+"quê hương việt nam đổi mới",
+"tình yêu và niềm tự hào dân tộc"
+
+];
+
+    return queries[
+        Math.floor(
+            Math.random() * queries.length
+        )
+    ];
+}
+
+
+/* =========================
+   Random Session ID
+========================= */
+
+function generateId(){
+
+    return Math.random()
+        .toString(36)
+        .substring(2, 12);
+}
+
+
+/* =========================
+   URL Builder
+========================= */
+
+function createDesktopUrl(){
+
+    return "https://www.bing.com/search"
+        + "?q=" + encodeURIComponent(randomQuery())
+        + "&form=QBLH"
+        + "&mkt=en-US";
+}
+
+
+function createMobileUrl(){
+
+    return "https://rewards.bing.com/earn"
+
+/*    return "https://www.bing.com/search"
+        + "?q=" + encodeURIComponent(randomQuery())
+        + "&FORM=EMMXA2"
+        + "&mkt=en-US"*/
+	;
+}
+
+
+/* =========================
+   Refresh Frame
+========================= */
+
+function refreshFrame(id, url){
+
+    const frame = document.getElementById(id);
+
+    if(frame){
+
+        frame.src = url;
+    }
+}
+
+
+/* =========================
+   Update Status
+========================= */
+
+function updateStatus(){
+
+    const now = new Date();
+
+    document.getElementById("statusText")
+        .innerText =
+            "Last Refresh: "
+            + now.toLocaleTimeString()
+            + " | Session: "
+            + generateId();
+}
+
+
+/* =========================
+   Refresh All
+========================= */
+
+function refreshAll(){
+
+    refreshFrame(
+        "desktopFrame",
+        createDesktopUrl()
+    );
+
+    refreshFrame(
+        "mobileFrame",
+        createMobileUrl()
+    );
+
+    updateStatus();
+
+    console.log(
+        "Refreshed:",
+        new Date().toLocaleTimeString()
+    );
+}
+
+
+/* =========================
+   Random Refresh Interval
+========================= */
+
+function scheduleRefresh(){
+
+    const randomDelay =
+
+        4500000 +
+
+        Math.floor(
+            Math.random() * 4500000
+        );
+
+    setTimeout(() => {
+
+        refreshAll();
+
+        scheduleRefresh();
+
+    }, randomDelay);
+}
+
+
+/* =========================
+   Start
+========================= */
+
+window.onload = function(){
+
+    refreshAll();
+
+    scheduleRefresh();
+};
+
+
+/* =========================
+   Refresh When Active
+========================= */
+
+document.addEventListener(
+    "visibilitychange",
+    function(){
+
+        if(!document.hidden){
+
+            refreshAll();
+        }
+    }
+);
+
+</script>
+
+</body>
+
+</html>
