@@ -5,13 +5,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Multi Apple Viewer</title>
 <style>
-{
+*{
     box-sizing:border-box;
 }
 body{
     margin:0;
     padding:15px;
-    background:#1b1b1b;
+    background:#0f0f0f;
     display:flex;
     flex-direction: row;
     gap:15px;
@@ -21,6 +21,36 @@ body{
     height:100vh;
     overflow:hidden;
 }
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+        padding: 10px;
+        gap: 10px;
+        height: auto;
+        overflow-y: auto;
+    }
+    .sidebar {
+        flex-direction: row !important;
+        width: 100%;
+        justify-content: center;
+    }
+    .frames-container {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+    .desktop-wrapper, .mobile-wrapper {
+        width: 100% !important;
+        height: auto !important;
+        max-height: 50vh;
+    }
+    #desktopFrame, #mobileFrame {
+        height: 400px !important;
+        width: 100% !important;
+    }
+}
+
 /* Sidebar Controls */
 .sidebar{
     display:flex;
@@ -30,23 +60,28 @@ body{
     width:auto;
 }
 button{
-    padding:10px 15px;
-    background:#ff9800;
+    padding:12px 20px;
+    background:linear-gradient(135deg, #ff9800, #ffb74d);
     color:#000;
     border:none;
-    border-radius:5px;
+    border-radius:8px;
     cursor:pointer;
     font-weight:bold;
-    font-size:13px;
-    transition:background 0.3s;
+    font-size:14px;
+    transition:all 0.3s;
     white-space:nowrap;
+    box-shadow: 0 2px 8px rgba(255,152,0,0.3);
 }
 button:hover{
-    background:#ffb74d;
+    background:linear-gradient(135deg, #ffb74d, #ffc947);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(255,152,0,0.4);
 }
 button:active{
-    background:#fb8c00;
+    background:linear-gradient(135deg, #fb8c00, #ff9800);
+    transform: translateY(0);
 }
+
 /* Frames Container */
 .frames-container{
     display:flex;
@@ -58,76 +93,97 @@ button:active{
     height:100%;
     min-height:0;
 }
+
 /* iPad Pro (12.9") - Aspect Ratio 16:10 */
 .desktop-wrapper{
     width:1280px;
     height:800px;
-    background:#3a2a2a;
+    background:linear-gradient(135deg, #2a2a2a, #3a3a3a);
     border-radius:20px;
-    padding:10px;
-    box-shadow:
-        0 0 20px rgba(0,0,0,0.4);
+    padding:12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
     display:flex;
     flex-direction:column;
     min-height:0;
     aspect-ratio: 16/10;
+    border: 1px solid rgba(255,255,255,0.1);
 }
 .desktop-title{
     color:#fff;
-    padding:8px;
-    font-size:14px;
+    padding:8px 12px;
+    font-size:13px;
     flex-shrink:0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.8;
 }
 #desktopFrame{
-    width:1280px;
-    height:800px;
+    width:100%;
+    height:100%;
     border:none;
     border-radius:14px;
     background:#fff;
     flex:1;
     min-height:0;
 }
-/* iPhone Pro (Max) - Aspect Ratio 19.5:9 */
+
+/* iPhone X - Aspect Ratio 19.5:9 */
 .mobile-wrapper{
     width:369px;
     height:800px;
-    background:#3a2a2a;
-    border-radius:40px;
-    padding:12px;
+    background:linear-gradient(135deg, #1a1a1a, #2a2a2a);
+    border-radius:45px;
+    padding:14px;
     position:relative;
-    box-shadow:
-        0 0 20px rgba(0,0,0,0.5);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
     display:flex;
     flex-direction:column;
     min-height:0;
     aspect-ratio: 19.5/9;
     flex-shrink:0;
+    border: 1px solid rgba(255,255,255,0.1);
 }
+
 .mobile-title{
     color:#fff;
-    padding:8px;
-    font-size:14px;
+    padding:8px 12px;
+    font-size:13px;
     flex-shrink:0;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.8;
 }
+
+/* iPhone X Notch */
 .mobile-notch{
-    width:100px;
-    height:20px;
+    width:120px;
+    height:25px;
     background:#000;
-    border-radius:20px;
+    border-radius:0 0 25px 25px;
     position:absolute;
-    top:16px;
+    top:14px;
     left:50%;
     transform:translateX(-50%);
     z-index:10;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.8);
 }
+
 #mobileFrame{
-    width:369px;
-    height:800px;
+    width:100%;
+    height:100%;
     border:none;
-    border-radius:30px;
+    border-radius:32px;
     background:#fff;
     flex:1;
     min-height:0;
+    margin-top: 5px;
+}
+
+/* iPhone X specific - safe area spacing */
+@media (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3) {
+    body {
+        padding: env(safe-area-inset-top, 10px) env(safe-area-inset-right, 10px) env(safe-area-inset-bottom, 10px) env(safe-area-inset-left, 10px);
+    }
 }
 </style>
 </head>
@@ -144,9 +200,9 @@ button:active{
         <div class="desktop-title">iPad Pro</div>
         <iframe id="desktopFrame"></iframe>
     </div>
-    <!-- iPhone Pro -->
+    <!-- iPhone X -->
     <div class="mobile-wrapper">
-        <div class="mobile-title">iPhone Pro</div>
+        <div class="mobile-title">iPhone X</div>
         <div class="mobile-notch"></div>
         <iframe id="mobileFrame"></iframe>
     </div>
@@ -492,8 +548,8 @@ const queries = [
 "cuộc đua không gian giữa các siêu cường",
 "Starlink và chiến tranh hiện đại",
 "vũ khí hạt nhân trong thế kỷ 21",
-"an ninh mạng trở thành chiến trường mới",
-"ảnh hưởng của TikTok đối với an ninh Mỹ",
+"an niên mạng trở thành chiến trường mới",
+"ảnh hưởng của TikTok đối với an niên Mỹ",
 "cuộc chiến dữ liệu toàn cầu",
 "AI quân sự thay đổi chiến tranh như thế nào",
 "cạnh tranh ảnh hưởng tại Đông Nam Á",
@@ -633,11 +689,16 @@ const queries = [
 "kinh tế toàn cầu bị chia tách công nghệ",
 "cạnh tranh ngoại giao số",
 "các siêu cường kiểm soát thông tin như thế nào",
-"AI và nguy cơ mất cân bằng quyền lực",
-"quốc gia nào dẫn đầu trí tuệ nhân tạo",
-"cạnh tranh đầu tư vào startup AI",
-"tương lai địa chính trị của châu Á",
-"vai trò của Ấn Độ trong cân bằng quyền lực",
+"AI có thể làm thay đổi địa chính trị không",
+"cạnh tranh nhân tài công nghệ toàn cầu",
+"chảy máu chất xám trong ngành AI",
+"cạnh tranh nghiên cứu lượng tử",
+"đầu tư quốc phòng bằng AI",
+"vũ khí tự hành và đạo đức chiến tranh",
+"chiến tranh mạng giữa các siêu cường",
+"tương lai nền kinh tế toàn cầu phân cực",
+"các quốc gia trung lập trước cạnh tranh Mỹ Trung Nga",
+"ASEAN trong cuộc cạnh tranh siêu cường",
 "cạnh tranh ảnh hưởng tại Thái Bình Dương",
 "chiến lược quân sự biển của Trung Quốc",
 "Mỹ duy trì ưu thế hải quân bằng cách nào",
